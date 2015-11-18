@@ -1,0 +1,32 @@
+<div class="container">
+  <div class="text-center">
+    <% if @settings.nil? %>
+      <%= form_for @new_settings do |f| %>
+        <%= f.label "Group Name" %>
+        <%= f.text_field :name %>
+        <br/>
+        <%= f.label "Bot name" %>
+        <%= f.text_field :bot_name %>
+        <br/>
+        <%= f.label "Web Url" %>
+        <%= f.text_field :web_url %>
+        <br/>
+        <%= f.submit %>
+      <% end %>
+    <% else %>
+      <%= form_for @settings do |f| %>
+        <%= f.label "Group Name" %>
+        <%= f.text_field :name %>
+        <br/>
+        <%= f.label "Bot name" %>
+        <%= f.text_field :bot_name %>
+        <br/>
+        <%= f.label "Web Url" %>
+        <%= f.text_field :web_url %>
+        <br/>
+        <%= f.submit class: "btn btn-default" %>
+      <% end %>
+    <% end %>
+  </div>
+</div>
+

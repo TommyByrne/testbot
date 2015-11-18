@@ -1,0 +1,115 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <meta content="IE=edge" http-equiv="X-UA-Compatible"/>
+    <meta content="width=device-width, initial-scale=1" name="viewport"/>
+    <title>Standup Bot by So Fetch</title>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,100,100italic,300,300italic,400italic,500,500italic,700,700italic,900,900italic" rel="stylesheet" type="text/css">/</link>
+  </head>
+  <body>
+    <div class="wrapper">
+      <div class="colors-3">
+        <nav class="navbar navbar-fixed-top">
+          <div class="container">
+            <div class="navbar-brand">
+            </div>
+          </div>
+        </nav>
+        <div class="container main-content">
+          <div class="row standup-date">
+            <div class="col-md-6 date">
+              <h2>
+                <strong>
+                  <%= @date_string %>
+                </strong>
+                <%= @date.strftime('%d') %>
+                <%= @date.strftime('%b') %>
+              </h2>
+            </div>
+            <div class="col-md-6 date-picker">
+              <a class="previous-date">
+                <%= link_to 'Previous Day', standups_url(:date => @date.prev_day) %>
+              </a>
+              <% if @date == Date.today %>
+                |
+                <a class="not-active">Today</a>
+              <% else %>
+                <a class="todays-date" href="<%= root_url %>">Today</a>
+                <a class="next-date">
+                  <%= link_to 'Next Day', standups_url(:date => @date.next_day) %>
+                </a>
+              <% end %>
+            </div>
+          </div>
+          <div class="masonry-container row clearfix">
+            <% @standups.each do |standup| %>
+              <div class="col-md-4 standup-card item">
+                <div class="standup-card-wrap">
+                  <div class="name-section section clearfix">
+                    <div class="row">
+                      <div class="col-lg-3 avatar">
+                        <%= image_tag(standup.user.avatar_url) %>
+                      </div>
+                      <div class="col-lg-9">
+                        <h2>
+                          <%= standup.user.full_name %>
+                        </h2>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- end name section
+                  -->
+                  <% if standup.today.nil? %>
+                    <div class="vacation section">
+                      <br/>
+                      <div class="text-center">
+                        <b>
+                          <%= standup.yesterday %>
+                        </b>
+                      </div>
+                    </div>
+                  <% else %>
+                    <div class="yesterday-section section">
+                      <h2>What I worked on yesterday:</h2>
+                      <ul>
+                        <li>
+                          <%= standup.yesterday.tr("<>","").gsub(/\n/, '<br><li>').html_safe %>
+                        </li>
+                      </ul>
+                    </div>
+                    <!-- end yesterday section
+                    -->
+                    <div class="today-section section">
+                      <h2>What I am working on today:</h2>
+                      <ul>
+                        <li>
+                          <%= standup.today.tr("<>","").gsub(/\n/, '<br><li>').html_safe unless standup.today.nil? %>
+                        </li>
+                      </ul>
+                    </div>
+                    <!-- end today section
+                    -->
+                    <div class="blocks-section section">
+                      <h2>What is in my way:</h2>
+                      <ul>
+                        <li>
+                          <%= standup.conflicts.tr("<>","").gsub(/\n/, '<br><li>').html_safe unless standup.today.nil? %>
+                        </li>
+                      </ul>
+                    </div>
+                  <% end %>
+                  <!-- end blocks section
+                  -->
+                </div>
+              </div>
+              <!-- /container
+              -->
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
+
